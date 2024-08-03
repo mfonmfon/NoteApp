@@ -11,4 +11,5 @@ public interface NoteServices {
     long getTotalNote();
     UpdateNoteResponse updateNoteWith(UpdateNoteRequest noteRequest);
     DeleteNoteResponse deleteNote(String id);
+
 }

@@ -7,6 +7,7 @@ import com.semicolon.africa.mynoteapp.dto.Request.UpdateNoteRequest;
 import com.semicolon.africa.mynoteapp.dto.Response.AddNoteResponse;
 import com.semicolon.africa.mynoteapp.dto.Response.UpdateNoteResponse;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,10 +24,14 @@ class NoteServicesImplTest {
     @Autowired
     private NoteServices noteServices;
     @Autowired
-    private HttpServletResponse httpServletResponse;
+    private NoteRepository noteRepository;
 
+    @BeforeEach
+    public void setUp(){
+        noteRepository.deleteAll();
+    }
     @Test
-    void createNote() {
+    void createNoteTest() {
         AddNoteRequest request = new AddNoteRequest();
         request.setTitle("Title");
         request.setContent("Content");
@@ -38,15 +43,28 @@ class NoteServicesImplTest {
 
     @Test
     void updateNoteWithTest() {
-        AddNoteRequest request = new AddNoteRequest();
-        request.setTitle(" new Title");
-        request.setContent(" new Content");
-//        request.setDateCreated(LocalDateTime.now());
-//        UpdateNoteResponse response = noteServices.updateNoteWith(request);
+        AddNoteResponse response = createMyNote();
+        UpdateNoteRequest request = new UpdateNoteRequest();
+        request.setId(response.getNoteId());
+        request.setTitle("new Title");
+        request.setContent("new Content");
+        UpdateNoteResponse response1 = noteServices.updateNoteWith(request);
+        assertThat(response1.getTitle()).contains("Updated");
+        assertThat(response.getNoteId()).isEqualTo(request.getId());
+
+    }
+
+    private AddNoteResponse createMyNote() {
+            AddNoteRequest request = new AddNoteRequest();
+            request.setTitle(" new Title");
+            request.setContent(" new Content");
+            return noteServices.createNote(request);
+
     }
 
     @Test
     void deleteNoteTest() {
 
     }
+
 }

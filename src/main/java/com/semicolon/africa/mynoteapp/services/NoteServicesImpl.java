@@ -42,6 +42,7 @@ public class NoteServicesImpl implements NoteServices{
     public UpdateNoteResponse updateNoteWith(UpdateNoteRequest noteRequest) {
         Note note = new Note();
         UpdateNoteRequest request = new UpdateNoteRequest();
+        note.setId(request.getId());
         note.setTitle(request.getTitle());
         note.setContent(request.getContent());
         note.setDateUpdated(LocalDateTime.now());
@@ -50,8 +51,12 @@ public class NoteServicesImpl implements NoteServices{
         response.setTitle(note.getTitle());
         response.setContent(note.getContent());
         return response;
+
     }
 
+//    private Note findById(Note note) {
+//        noteRepository.findById(re)
+//    }
 
     @Override
     public DeleteNoteResponse deleteNote(String id) {
@@ -64,14 +69,5 @@ public class NoteServicesImpl implements NoteServices{
         DeleteNoteResponse response = new DeleteNoteResponse();
         response.setMessage("Note deleted successfully. ");
         return response;
-    }
-
-    private AddNoteRequest findById(String id) {
-        for (Note note: noteRepository.findAll()) {
-            if (note.getId().equals(id)) {
-                return findById(note.getId());
-            }
-        }
-        return null;
     }
 }
