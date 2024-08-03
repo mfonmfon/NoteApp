@@ -26,24 +26,52 @@ public class NoteServicesImpl implements NoteServices{
         note.setDateCreated(LocalDateTime.now());
         noteRepository.save(note);
         AddNoteResponse response = new AddNoteResponse();
-        note.setTitle(response.getTitle());
-        note.setContent(response.getContent());
-        note.setDateCreated(response.getDateCreated());
+        response.setNoteId(note.getId());
+        response.setTitle(note.getTitle());
+        response.setContent(note.getContent());
+        response.setDateCreated(note.getDateCreated());
         return response;
     }
 
     @Override
     public long getTotalNote() {
-        return 0;
+        return noteRepository.count();
     }
 
     @Override
     public UpdateNoteResponse updateNoteWith(UpdateNoteRequest noteRequest) {
-        return null;
+        Note note = new Note();
+        UpdateNoteRequest request = new UpdateNoteRequest();
+        note.setTitle(request.getTitle());
+        note.setContent(request.getContent());
+        note.setDateUpdated(LocalDateTime.now());
+        noteRepository.save(note);
+        UpdateNoteResponse response = new UpdateNoteResponse();
+        response.setTitle(note.getTitle());
+        response.setContent(note.getContent());
+        return response;
     }
+
 
     @Override
     public DeleteNoteResponse deleteNote(String id) {
+        Note note = new Note();
+        AddNoteRequest request = new AddNoteRequest();
+        note.setTitle(request.getTitle());
+        note.setContent(request.getContent());
+        note.setId(request.getNoteId());
+        noteRepository.delete(note);
+        DeleteNoteResponse response = new DeleteNoteResponse();
+        response.setMessage("Note deleted successfully. ");
+        return response;
+    }
+
+    private AddNoteRequest findById(String id) {
+        for (Note note: noteRepository.findAll()) {
+            if (note.getId().equals(id)) {
+                return findById(note.getId());
+            }
+        }
         return null;
     }
 }
