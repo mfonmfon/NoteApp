@@ -1,10 +1,12 @@
 package com.semicolon.africa.mynoteapp.services;
 
+import com.mongodb.internal.bulk.DeleteRequest;
 import com.semicolon.africa.mynoteapp.data.model.Note;
 import com.semicolon.africa.mynoteapp.data.repository.NoteRepository;
 import com.semicolon.africa.mynoteapp.dto.Request.AddNoteRequest;
 import com.semicolon.africa.mynoteapp.dto.Request.UpdateNoteRequest;
 import com.semicolon.africa.mynoteapp.dto.Response.AddNoteResponse;
+import com.semicolon.africa.mynoteapp.dto.Response.DeleteNoteResponse;
 import com.semicolon.africa.mynoteapp.dto.Response.UpdateNoteResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,9 +51,8 @@ class NoteServicesImplTest {
         request.setTitle("new Title");
         request.setContent("new Content");
         UpdateNoteResponse response1 = noteServices.updateNoteWith(request);
-        assertThat(response1.getTitle()).contains("Updated");
+        assertThat(response1.getMessage()).contains("note Updated");
         assertThat(response.getNoteId()).isEqualTo(request.getId());
-
     }
 
     private AddNoteResponse createMyNote() {
@@ -59,12 +60,12 @@ class NoteServicesImplTest {
             request.setTitle(" new Title");
             request.setContent(" new Content");
             return noteServices.createNote(request);
-
     }
-
     @Test
     void deleteNoteTest() {
-
+        AddNoteResponse response = createMyNote();
+        String id = response.getNoteId();
+        DeleteNoteResponse deletedNote = noteServices.deleteNote(id);
+        assertThat(deletedNote.getMessage()).contains("delete");
     }
-
 }

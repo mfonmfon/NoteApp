@@ -8,8 +8,5 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class UpdateNoteResponse {
-    private String id;
-    private String title;
-    private String content;
-    private LocalDateTime dateUpdated;
+    private String message;
 }
