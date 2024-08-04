@@ -41,6 +41,9 @@ public class NoteController {
             UpdateNoteResponse response = noteServices.updateNoteWith(request);
             return new ResponseEntity<>(new ApiResponse(true, response), HttpStatus.OK);
         }
+        catch(Exception exception){
+            return new ResponseEntity<>(new ApiResponse(false,exception), HttpStatus.BAD_REQUEST);
+        }
 
     }
 
