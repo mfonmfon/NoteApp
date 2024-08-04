@@ -6,5 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface NoteRepository extends MongoRepository<Note, String> {
+    boolean existsByTitle(String title);
 
 }
